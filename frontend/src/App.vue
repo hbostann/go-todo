@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <AddTodo v-on:add-todo="addTodo" />
+    <Todos v-bind:incomplete-todos="incompleteTodos" v-bind:complete-todos="completeTodos" />
   </div>
 </template>
 
 <script>
   import AddTodo from "./components/AddTodo";
+  import Todos from "./components/Todos";
   import axios from "axios";
 
   export default {
     name: "TodoListApp",
     components: {
-      AddTodo
+      AddTodo,
+      Todos
     },
     data() {
       return {
