@@ -108,6 +108,39 @@ func DeleteItem(response http.ResponseWriter, request *http.Request) {
 	io.WriteString(response, `{"deleted": true}`)
 }
 
+// GetCompletedItems responds to the request with a json list of all the
+// items which are marked as complete (Done == true).
+func GetCompletedItems(response http.ResponseWriter, request *http.Request) {
+	log.Info("Get Complete Items")
+	var items []TodoItem
+	db.Where("done = ?", true).Find(&items)
+	log.Info("Complete Items: ", items)
+	response.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(response).Encode(items)
+}
+
+// GetIncompleteItems responds to the request with a json list of all the
+// items which are marked as incomplete (Done == false).
+func GetIncompleteItems(response http.ResponseWriter, request *http.Request) {
+	log.Info("Get Incomplete Items")
+	var items []TodoItem
+	db.Where("done = ?", false).Find(&items)
+	log.Info("Incomplete Items: ", items)
+	response.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(response).Encode(items)
+}
+
+// GetItems responds to the request with a json list of all existings todos
+// in the database.
+func GetItems(response http.ResponseWriter, request *http.Request) {
+	log.Info("Get All Items")
+	var items []TodoItem
+	db.Find(&items)
+	log.Info("All Items: ", items)
+	response.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(response).Encode(items)
+}
+
 func init() {
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
 	log.SetReportCaller(false)
