@@ -9,6 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"github.com/rs/cors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -154,5 +155,14 @@ func main() {
 	db.Debug().AutoMigrate(&TodoItem{})
 	router := mux.NewRouter()
 	router.HandleFunc("/isAlive", IsAlive).Methods("GET")
-	http.ListenAndServe(":8000", router)
+	router.HandleFunc("/addTodo", CreateTodo).Methods("POST")
+	router.HandleFunc("/todo/{id}", UpdateItem).Methods("POST")
+	router.HandleFunc("/todo/{id}", DeleteItem).Methods("DELETE")
+	router.HandleFunc("/todo-complete", GetCompletedItems).Methods("GET")
+	router.HandleFunc("/todo-incomplete", GetIncompleteItems).Methods("GET")
+	router.HandleFunc("/todo", GetItems).Methods("GET")
+
+	corsHandler := cors.New(cors.Options{AllowedMethods: []string{"GET", "POST", "DELETE"}}).Handler(router)
+	log.Info("Started Listening")
+	http.ListenAndServe(":8000", corsHandler)
 }
