@@ -2,13 +2,21 @@
   <div style="padding: 15px;">
     <ul class="todo incomplete">
       <li v-bind:key="todo.id" v-for="todo in incompleteTodos">
-        <TodoItem v-bind:todo="todo" />
+        <TodoItem
+          v-bind:todo="todo"
+          v-on:del-todo="$emit('del-todo', todo.id)"
+          v-on:done-todo="$emit('done-todo', todo.id)"
+        />
       </li>
     </ul>
     <hr />
     <ul class="todo complete">
       <li v-bind:key="todo.id" v-for="todo in completeTodos">
-        <TodoItem v-bind:todo="todo" />
+        <TodoItem
+          v-bind:todo="todo"
+          v-on:del-todo="$emit('del-todo', todo.id)"
+          v-on:done-todo="$emit('done-todo', todo.id)"
+        />
       </li>
     </ul>
   </div>

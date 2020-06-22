@@ -2,7 +2,7 @@
   <div class="container">
     <div class="description">{{ todo.desc }}</div>
     <div class="buttons">
-      <button class="remove">
+      <button class="remove" v-on:click="$emit('del-todo', todo.id)">
         <svg
           enable-background="new 0 0 22 22"
           version="1.1"
@@ -28,7 +28,11 @@
           />
         </svg>
       </button>
-      <button class="done" v-bind:class="{'completed': todo.done}">
+      <button
+        class="done"
+        v-on:click="$emit('done-todo',  todo.id)"
+        v-bind:class="{'completed': todo.done}"
+      >
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
